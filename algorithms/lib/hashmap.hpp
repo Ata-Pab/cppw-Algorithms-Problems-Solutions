@@ -79,6 +79,21 @@ namespace DataStructures
             throw std::out_of_range("Key not found");
         }
 
+        HashNode<Key, Value> &getNode(const Key &key)
+        {
+            size_t index = hashKey(key);
+
+            for (auto &node : buckets[index])
+            {
+                if (node.key == key)
+                {
+                    return node;
+                }
+            }
+
+            throw std::out_of_range("Key not found");
+        }
+
         bool contains(const Key &key) const
         {
             size_t index = hashKey(key);
