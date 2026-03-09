@@ -1,4 +1,4 @@
-﻿/******************************************************************************
+/******************************************************************************
 Rational Arithmetic
 
 https://open.kattis.com/problems/rationalarithmetic
@@ -8,23 +8,9 @@ assets/images/rational_arithmetic.png
 
 *******************************************************************************/
 #include <iostream>
+#include <numeric>
 
 using namespace std;
-
-long long gcd(long long a, long long b)
-{
-    a = std::abs(a);
-    b = std::abs(b);
-
-    while (b != 0)
-    {
-        long long temp = b;
-        b = a % b;
-        a = temp;
-    }
-
-    return a;
-}
 
 int main()
 {
@@ -63,7 +49,7 @@ int main()
             break;
         }
 
-        long long g = gcd(num, den);
+        long long g = gcd(abs(num), abs(den));
         num /= g;
         den /= g;
 
