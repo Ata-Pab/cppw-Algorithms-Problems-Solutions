@@ -24,19 +24,21 @@ O(n)
 Approach
 Sliding Window
 
-==== Fix ====
+======> Modify the algorithm to also return the substring itself, not just its length.
 
-left=0 right=0 → a → unique → len=1
-left=0 right=1 → b → unique → len=2
-left=0 right=2 → c → unique → len=3
-left=0 right=3 → a → duplicate
+Input
+pwwkew
 
-[left ........ right]
+Output
+wke
 
-- right expands the window
-- left moves only when a duplicate appears
+
+Time  : O(n)
+Space : O(1)
 *******************************************************************************/
 #include <iostream>
+#include <vector>
+#include <string>
 
 #define ASCII_SIZE 256
 
@@ -45,27 +47,36 @@ int main()
     std::string s;
     std::cin >> s;
 
-    bool seen[ASCII_SIZE] = {false};
+    std::vector<int> last_seen(ASCII_SIZE, -1);
 
     int left = 0;
     int max_len = 0;
+    // To get substring
+    int best_start_ix = -1;
 
-    for (int right = 0; right < s.length(); right++)
+    for (size_t right = 0; right < s.length(); right++)
     {
-        while (seen[(unsigned char)s[right]])
+        unsigned char c = s[right];
+
+        if (last_seen[c] >= left) // eliminate the risk of moving the window backwards
         {
-            seen[(unsigned char)s[left]] = false;
-            left++;
+            left = last_seen[c] + 1;
         }
 
-        seen[(unsigned char)s[right]] = true;
+        last_seen[c] = right;
 
         int window_len = right - left + 1;
 
         if (window_len > max_len)
+        {
             max_len = window_len;
+            best_start_ix = left;
+        }
     }
 
+    std::string out = s.substr(best_start_ix, max_len);
+
+    std::cout << out << std::endl;
     std::cout << max_len << std::endl;
 
     return 0;
